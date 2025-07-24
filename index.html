@@ -16,20 +16,25 @@
       padding: 2rem;
       text-align: center;
       background: linear-gradient(to right, #6a11cb, #2575fc);
+      position: relative;
     }
     header h1 {
       margin: 0;
       font-size: 2.5rem;
+      display: inline-block;
+    }
+    .info-icon {
+      display: inline-block;
+      margin-left: 10px;
+      cursor: help;
+      font-size: 1.2rem;
+      vertical-align: middle;
+      color: #f0f0f0;
     }
     header p {
       margin-top: 0.5rem;
       font-size: 1.2rem;
       color: #e0e0e0;
-    }
-    .info-icon {
-      cursor: help;
-      font-size: 1.2rem;
-      margin-left: 8px;
     }
     main {
       max-width: 800px;
@@ -83,11 +88,10 @@
 </head>
 <body>
   <header>
-    <h1>Unfinishable</h1>
-    <p>
-      A story that never ends. Add your sentence. Shape the multiverse.
+    <h1>Unfinishable
       <span class="info-icon" title="This is a collaborative story. Add one sentence. The tale never ends.">ℹ️</span>
-    </p>
+    </h1>
+    <p>A story that never ends. Add your sentence. Shape the multiverse.</p>
   </header>
 
   <main>
@@ -99,7 +103,7 @@
     <section class="story-branch" id="branch-section">
       <h2>🌿 Branches</h2>
       <div id="storyBranches">
-        <p>Loading branches...</p>
+        <p>No branches yet... you could be the very first. 🌟</p>
       </div>
     </section>
 
@@ -133,6 +137,10 @@
         currentBranches = data.record;
 
         container.innerHTML = "";
+        if (currentBranches.length === 0) {
+          container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
+          return;
+        }
         currentBranches.forEach(branch => {
           const p = document.createElement("p");
           p.textContent = "— " + branch.text;
