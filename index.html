@@ -115,21 +115,6 @@
       background-color: #1a5edb;
     }
 
-    #clearBranchesButton {
-      margin-top: 0.5rem;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background-color: #6a11cb;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    #clearBranchesButton:hover {
-      background-color: #4e0fae;
-    }
-
     footer {
       text-align: center;
       padding: 2rem;
@@ -162,7 +147,6 @@
       <label for="newSentence"><strong>Add your sentence:</strong></label>
       <textarea id="newSentence" placeholder="Continue the story..."></textarea>
       <button type="submit">Submit Sentence</button>
-      <button type="button" id="clearBranchesButton">Clear Branches</button>
     </form>
   </main>
 
@@ -233,10 +217,15 @@
       if (!sentence) return;
 
       const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
-      const basicSwears = /\b(fuck|shit|bitch|damn|asshole|cunt|dick|pussy|bastard|slut)\b/i;
-           const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
 
-      if (forbiddenEndings.test(sentence) || basicSwears.test(sentence) || stylizedSwears.test(sentence)) {
+      const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
+
+            if (forbiddenEndings.test(sentence)) {
+        alert("This story cannot end. Try again with a new direction.");
+        return;
+      }
+
+      if (stylizedSwears.test(sentence)) {
         alert("⚠️ The Elders reject your vulgar invocation...");
         return;
       }
@@ -245,11 +234,8 @@
       textarea.value = "";
     });
 
-    document.getElementById("clearBranchesButton").addEventListener("click", () => {
-      container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
-    });
-
     loadBranches();
   </script>
 </body>
 </html>
+
