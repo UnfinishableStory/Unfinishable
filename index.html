@@ -76,35 +76,40 @@
       background-color: #1a5edb;
     }
 
-    #cookies-policy {
-      margin-top: 4rem;
-      background-color: #121212;
-      border: 2px solid #2d2d2d;
-      border-radius: 8px;
-      padding: 2rem;
-      box-shadow: 0 0 12px rgba(106, 17, 203, 0.3);
-    }
-
-    #cookies-policy h1 {
-      color: #8ab4ff;
-      margin-bottom: 0.5rem;
-    }
-
-    #cookies-policy h2,
-    #cookies-policy h4 {
-      color: #6a11cb;
-      margin-top: 1.5rem;
-    }
-
-    #cookies-policy p,
-    #cookies-policy li {
+    #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a1a1a;
+      border-top: 2px solid #2575fc;
+      padding: 1rem;
       font-size: 0.95rem;
-      line-height: 1.5;
+      color: #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 9999;
     }
 
-    #cookies-policy a {
+    #cookie-banner a {
       color: #6a11cb;
       text-decoration: underline;
+    }
+
+    #cookie-banner button {
+      background-color: #2575fc;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin-left: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #cookie-banner button:last-child {
+      background-color: #444;
+      color: #ccc;
     }
 
     footer {
@@ -116,8 +121,8 @@
 
     footer a {
       color: #888;
-      margin: 0 0.5rem;
       text-decoration: none;
+      margin: 0 0.5rem;
     }
 
     footer a:hover {
@@ -149,44 +154,25 @@
       <textarea id="newSentence" placeholder="Continue the story..."></textarea>
       <button type="submit">Submit Sentence</button>
     </form>
-
-    <section id="cookies-policy">
-      <h1>🍪 Cookies Policy</h1>
-      <p><strong>Last updated:</strong> July 24, 2025</p>
-      <p>This Cookies Policy explains what Cookies are and how We use them. It was created via the <a href="https://www.freeprivacypolicy.com/free-cookies-policy-generator/" target="_blank">Free Cookies Policy Generator</a>.</p>
-      
-      <h2>Definitions</h2>
-      <ul>
-        <li><strong>Company</strong>: Unfinishable</li>
-        <li><strong>Cookies</strong>: Small files containing details of your browsing history</li>
-        <li><strong>Website</strong>: <a href="https://unfinishable.vercel.app" target="_blank">https://unfinishable.vercel.app</a></li>
-        <li><strong>You</strong>: The individual using this site</li>
-      </ul>
-
-      <h2>Types of Cookies We Use</h2>
-      <ul>
-        <li><strong>Necessary</strong> – Session cookies for functionality and security</li>
-        <li><strong>Functionality</strong> – Persistent cookies to remember user choices</li>
-      </ul>
-
-      <h4>Your Choices</h4>
-      <p>You may disable or delete cookies via your browser settings. See links for:</p>
-      <ul>
-        <li><a href="https://support.google.com/accounts/answer/32050" target="_blank">Chrome</a></li>
-        <li><a href="https://support.mozilla.org/en-US/kb/delete-cookies-remove-info-websites-stored" target="_blank">Firefox</a></li>
-        <li><a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank">Safari</a></li>
-      </ul>
-
-      <h4>Contact</h4>
-      <p>📧 Email: pokalkhan123@gmail.com</p>
-    </section>
   </main>
+
+  <div id="cookie-banner">
+    <div>
+      This site uses cookies. See our
+      <a href="#!" onclick="scrollToFooter()">Cookies Policy</a> and
+      <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a>.
+    </div>
+    <div>
+      <button onclick="acceptCookies()">Accept</button>
+      <button onclick="declineCookies()">Decline</button>
+    </div>
+  </div>
 
   <footer>
     <p>
-      <a href="#cookies-policy">Cookies Policy</a> |
+      <a href="#!" onclick="scrollToFooter()">Cookies Policy</a> |
       <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a> |
-      Version 1.1 • Last updated July 24, 2025
+      Version 1.2 • Last updated July 24, 2025
     </p>
   </footer>
 
@@ -230,7 +216,32 @@
         console.error("Error loading branches:", err);
         container.innerHTML = "<p>Failed to load branches.</p>";
       }
-         const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+    }
+
+    async function saveBranch(text) {
+      try {
+        const updatedBranches = [...currentBranches, { text }];
+        await fetch(apiUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": apiKey
+          },
+          body: JSON.stringify(updatedBranches)
+        });
+        currentBranches = updatedBranches;
+        loadBranches();
+      } catch (err) {
+        console.error("Error saving branch:", err);
+      }
+    }
+
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const sentence = textarea.value.trim();
+      if (!sentence) return;
+
+      const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
       const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
       const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
 
@@ -249,6 +260,27 @@
     });
 
     loadBranches();
+
+    function acceptCookies() {
+      localStorage.setItem('cookiesAccepted', 'true');
+      document.getElementById('cookie-banner').style.display = 'none';
+    }
+
+    function declineCookies() {
+      localStorage.setItem('cookiesAccepted', 'false');
+      document.getElementById('cookie-banner').style.display = 'none';
+    }
+
+    window.addEventListener('load', () => {
+      const consent = localStorage.getItem('cookiesAccepted');
+      if (consent === 'true' || consent === 'false') {
+        document.getElementById('cookie-banner').style.display = 'none';
+      }
+    });
+
+    function scrollToFooter() {
+      document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
