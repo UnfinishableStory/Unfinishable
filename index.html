@@ -18,7 +18,6 @@
       padding: 2rem;
       text-align: center;
       background: linear-gradient(to right, #6a11cb, #2575fc);
-      position: relative;
     }
 
     header h1 {
@@ -77,6 +76,37 @@
       background-color: #1a5edb;
     }
 
+    #cookies-policy {
+      margin-top: 4rem;
+      background-color: #121212;
+      border: 2px solid #2d2d2d;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 0 12px rgba(106, 17, 203, 0.3);
+    }
+
+    #cookies-policy h1 {
+      color: #8ab4ff;
+      margin-bottom: 0.5rem;
+    }
+
+    #cookies-policy h2,
+    #cookies-policy h4 {
+      color: #6a11cb;
+      margin-top: 1.5rem;
+    }
+
+    #cookies-policy p,
+    #cookies-policy li {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    #cookies-policy a {
+      color: #6a11cb;
+      text-decoration: underline;
+    }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -84,21 +114,14 @@
       color: #888;
     }
 
-    #cookies-policy {
-      max-width: 800px;
-      margin: 0 auto 4rem;
-      padding: 1rem;
-      background-color: #1a1a1a;
-      border-left: 4px solid #2575fc;
+    footer a {
+      color: #888;
+      margin: 0 0.5rem;
+      text-decoration: none;
     }
 
-    #cookies-policy h1, #cookies-policy h2, #cookies-policy h4 {
-      color: #8ab4ff;
-    }
-
-    #cookies-policy a {
+    footer a:hover {
       color: #6a11cb;
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -128,41 +151,40 @@
     </form>
 
     <section id="cookies-policy">
-      <h1>Cookies Policy</h1>
-      <p>Last updated: July 24, 2025</p>
-      <p>This Cookies Policy explains what Cookies are and how We use them. This policy was generated with the <a href="https://www.freeprivacypolicy.com/free-cookies-policy-generator/" target="_blank">Free Cookies Policy Generator</a>.</p>
-      <p>We do not store sensitive personal information such as mailing addresses or account passwords in the Cookies We use.</p>
-
-      <h2>Interpretation and Definitions</h2>
-      <h4>Definitions</h4>
+      <h1>🍪 Cookies Policy</h1>
+      <p><strong>Last updated:</strong> July 24, 2025</p>
+      <p>This Cookies Policy explains what Cookies are and how We use them. It was created via the <a href="https://www.freeprivacypolicy.com/free-cookies-policy-generator/" target="_blank">Free Cookies Policy Generator</a>.</p>
+      
+      <h2>Definitions</h2>
       <ul>
         <li><strong>Company</strong>: Unfinishable</li>
         <li><strong>Cookies</strong>: Small files containing details of your browsing history</li>
         <li><strong>Website</strong>: <a href="https://unfinishable.vercel.app" target="_blank">https://unfinishable.vercel.app</a></li>
-        <li><strong>You</strong>: The individual using this website</li>
+        <li><strong>You</strong>: The individual using this site</li>
       </ul>
 
-      <h2>The Use of Cookies</h2>
-      <h4>Types of Cookies We Use</h4>
+      <h2>Types of Cookies We Use</h2>
       <ul>
-        <li><strong>Necessary</strong>: Session cookies to authenticate users and prevent abuse</li>
-        <li><strong>Functionality</strong>: Persistent cookies to remember preferences</li>
+        <li><strong>Necessary</strong> – Session cookies for functionality and security</li>
+        <li><strong>Functionality</strong> – Persistent cookies to remember user choices</li>
       </ul>
 
-      <h4>Your Choices Regarding Cookies</h4>
-      <p>You may disable or delete cookies in your browser. Visit the browser's help pages for guidance.</p>
-      <p>Learn more: <a href="https://www.freeprivacypolicy.com/blog/cookies/" target="_blank">Cookies: What Do They Do?</a></p>
+      <h4>Your Choices</h4>
+      <p>You may disable or delete cookies via your browser settings. See links for:</p>
+      <ul>
+        <li><a href="https://support.google.com/accounts/answer/32050" target="_blank">Chrome</a></li>
+        <li><a href="https://support.mozilla.org/en-US/kb/delete-cookies-remove-info-websites-stored" target="_blank">Firefox</a></li>
+        <li><a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank">Safari</a></li>
+      </ul>
 
       <h4>Contact</h4>
-      <ul>
-        <li>Email: pokalkhan123@gmail.com</li>
-      </ul>
+      <p>📧 Email: pokalkhan123@gmail.com</p>
     </section>
   </main>
 
   <footer>
     <p>
-      <a href="#cookies-policy">Cookies Policy</a> | 
+      <a href="#cookies-policy">Cookies Policy</a> |
       <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a> |
       Version 1.1 • Last updated July 24, 2025
     </p>
@@ -208,32 +230,7 @@
         console.error("Error loading branches:", err);
         container.innerHTML = "<p>Failed to load branches.</p>";
       }
-    }
-
-    async function saveBranch(text) {
-      try {
-        const updatedBranches = [...currentBranches, { text }];
-        await fetch(apiUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": apiKey
-          },
-          body: JSON.stringify(updatedBranches)
-        });
-        currentBranches = updatedBranches;
-        loadBranches();
-      } catch (err) {
-        console.error("Error saving branch:", err);
-      }
-    }
-
-    form.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const sentence = textarea.value.trim();
-      if (!sentence) return;
-
-            const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+         const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
       const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
       const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
 
