@@ -172,8 +172,11 @@
         const data = await res.json();
         currentBranches = data.record;
 
+        const blockedDisplayWords = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
         const validBranches = currentBranches.filter(branch =>
-          branch.text && branch.text.trim() !== ""
+          branch.text &&
+          branch.text.trim() !== "" &&
+          !blockedDisplayWords.test(branch.text)
         );
 
         container.innerHTML = "";
@@ -217,16 +220,16 @@
       if (!sentence) return;
 
       const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+      const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
+            const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
 
-      const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
-
-            if (forbiddenEndings.test(sentence)) {
-        alert("This story cannot end. Try again with a new direction.");
-        return;
-      }
-
-      if (stylizedSwears.test(sentence)) {
+      if (
+        forbiddenEndings.test(sentence) ||
+        basicSwears.test(sentence) ||
+        stylizedSwears.test(sentence)
+      ) {
         alert("⚠️ The Elders reject your vulgar invocation...");
+        textarea.value = "";
         return;
       }
 
@@ -238,4 +241,3 @@
   </script>
 </body>
 </html>
-
