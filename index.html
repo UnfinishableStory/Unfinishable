@@ -12,59 +12,84 @@
       background-color: #0d0d0d;
       color: #f0f0f0;
     }
+
+    /* 🌟 Info Button: Gorgeous Redesign */
     .info-corner {
       position: absolute;
       top: 12px;
       left: 12px;
-      font-size: 1.2rem;
-      cursor: help;
-      color: #f0f0f0;
-      background: none;
-      border: none;
-      padding: 4px 8px;
-      transition: all 0.3s ease;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      line-height: 32px;
+      color: #ffffff;
+      background: radial-gradient(circle at center, #6a11cb 0%, #2575fc 100%);
+      box-shadow: 0 0 10px rgba(98, 0, 234, 0.6), 0 0 20px rgba(98, 0, 234, 0.3);
+      backdrop-filter: blur(2px);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       z-index: 1000;
-      text-shadow: 0 0 6px rgba(255,255,255,0.6);
+      animation: pulse-glow 3s infinite ease-in-out;
     }
+
     .info-corner:hover {
-      color: #2575fc;
-      text-shadow: 0 0 10px #ffffff, 0 0 20px #2575fc;
-      transform: scale(1.1);
+      transform: scale(1.2) rotate(3deg);
+      box-shadow: 0 0 16px rgba(144, 19, 254, 0.8), 0 0 30px rgba(144, 19, 254, 0.4);
     }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(98, 0, 234, 0.6), 0 0 20px rgba(98, 0, 234, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(144, 19, 254, 0.9), 0 0 30px rgba(144, 19, 254, 0.5);
+      }
+    }
+
     header {
       padding: 2rem;
       text-align: center;
       background: linear-gradient(to right, #6a11cb, #2575fc);
       position: relative;
     }
+
     header h1 {
       margin: 0;
       font-size: 2.5rem;
     }
+
     header p {
       margin-top: 0.5rem;
       font-size: 1.2rem;
       color: #e0e0e0;
     }
+
     main {
       max-width: 800px;
       margin: 2rem auto;
       padding: 0 1rem;
     }
+
     .story-branch {
       margin-bottom: 2rem;
       padding: 1rem;
       background-color: #1a1a1a;
       border-left: 4px solid #6a11cb;
     }
+
     .story-branch p {
       margin: 0.5rem 0;
     }
+
     form {
       margin-top: 2rem;
       display: flex;
       flex-direction: column;
     }
+
     textarea {
       padding: 1rem;
       font-size: 1rem;
@@ -75,6 +100,7 @@
       background-color: #2a2a2a;
       color: #fff;
     }
+
     button {
       margin-top: 1rem;
       padding: 0.75rem;
@@ -85,9 +111,11 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #1a5edb;
     }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -98,7 +126,7 @@
 </head>
 <body>
   <header>
-    <span class="info-corner" title="This is a collaborative story. Add one sentence to continue the tale. The tale never ends.">ℹ️</span>
+    <span class="info-corner" title="This is a collaborative story. Add one sentence. The tale never ends.">i</span>
     <h1>Unfinishable</h1>
     <p>A story that never ends. Add your sentence. Shape the multiverse.</p>
   </header>
