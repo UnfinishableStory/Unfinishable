@@ -12,6 +12,25 @@
       background-color: #0d0d0d;
       color: #f0f0f0;
     }
+    .info-corner {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      font-size: 1.2rem;
+      cursor: help;
+      color: #f0f0f0;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      padding: 4px 8px;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .info-corner:hover {
+      background-color: #ffffff;
+      color: #2575fc;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
     header {
       padding: 2rem;
       text-align: center;
@@ -21,25 +40,6 @@
     header h1 {
       margin: 0;
       font-size: 2.5rem;
-      display: inline-block;
-    }
-    .info-icon {
-      display: inline-block;
-      margin-left: 10px;
-      cursor: help;
-      font-size: 1.2rem;
-      vertical-align: middle;
-      color: #f0f0f0;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      padding: 2px 6px;
-      transition: all 0.3s ease;
-    }
-    .info-icon:hover {
-      background-color: #ffffff;
-      color: #2575fc;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-      transform: scale(1.1);
     }
     header p {
       margin-top: 0.5rem;
@@ -97,10 +97,10 @@
   </style>
 </head>
 <body>
+  <span class="info-corner" title="This is a collaborative story. Add one sentence. The tale never ends.">ℹ️</span>
+
   <header>
-    <h1>Unfinishable
-      <span class="info-icon" title="This is a collaborative story. Add one sentence. The tale never ends.">ℹ️</span>
-    </h1>
+    <h1>Unfinishable</h1>
     <p>A story that never ends. Add your sentence. Shape the multiverse.</p>
   </header>
 
