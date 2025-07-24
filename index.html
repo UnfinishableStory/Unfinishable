@@ -90,6 +90,9 @@
 
     <section class="story-branch" id="branch-section">
       <h2>🌿 Branches</h2>
+      <div id="storyBranches">
+        <p>Loading branches...</p>
+      </div>
     </section>
 
     <form id="sentence-form">
@@ -104,23 +107,57 @@
   </footer>
 
   <script>
-    const form = document.getElementById('sentence-form');
-    const textarea = document.getElementById('newSentence');
-    const branchSection = document.getElementById('branch-section');
+    const binId = "6881cd93f7e7a370d1ed0679";
+    const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
+    const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
+    let currentBranches = [];
 
-    // Load saved story from localStorage
-    const savedStory = JSON.parse(localStorage.getItem('unfinishableStory')) || [];
-    savedStory.forEach(sentence => {
-      const p = document.createElement('p');
-      p.textContent = '— ' + sentence;
-      branchSection.appendChild(p);
-    });
+    const form = document.getElementById("sentence-form");
+    const textarea = document.getElementById("newSentence");
+    const container = document.getElementById("storyBranches");
 
-    form.addEventListener('submit', function (e) {
+    async function loadBranches() {
+      try {
+        const res = await fetch(`${apiUrl}/latest`, {
+          headers: { "X-Master-Key": apiKey }
+        });
+        const data = await res.json();
+        currentBranches = data.record;
+
+        container.innerHTML = "";
+        currentBranches.forEach(branch => {
+          const p = document.createElement("p");
+          p.textContent = "— " + branch.text;
+          container.appendChild(p);
+        });
+      } catch (err) {
+        console.error("Error loading branches:", err);
+        container.innerHTML = "<p>Failed to load branches.</p>";
+      }
+    }
+
+    async function saveBranch(text) {
+      try {
+        const updatedBranches = [...currentBranches, { text }];
+        await fetch(apiUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": apiKey
+          },
+          body: JSON.stringify(updatedBranches)
+        });
+        currentBranches = updatedBranches;
+        loadBranches();
+      } catch (err) {
+        console.error("Error saving branch:", err);
+      }
+    }
+
+    form.addEventListener("submit", async function(e) {
       e.preventDefault();
-
       const sentence = textarea.value.trim();
-      if (sentence === '') return;
+      if (!sentence) return;
 
       const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b)/i;
       if (forbiddenEndings.test(sentence)) {
@@ -128,15 +165,11 @@
         return;
       }
 
-      const p = document.createElement('p');
-      p.textContent = '— ' + sentence;
-      branchSection.appendChild(p);
-
-      savedStory.push(sentence);
-      localStorage.setItem('unfinishableStory', JSON.stringify(savedStory));
-
-      textarea.value = '';
+      await saveBranch(sentence);
+      textarea.value = "";
     });
+
+    loadBranches();
   </script>
 </body>
 </html>
