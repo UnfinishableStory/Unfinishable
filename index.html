@@ -13,7 +13,6 @@
       color: #f0f0f0;
     }
 
-    /* 🌟 Info Button: Gorgeous Redesign */
     .info-corner {
       position: absolute;
       top: 12px;
@@ -218,8 +217,15 @@
       if (!sentence) return;
 
       const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+      const swearWords = /\b(fuck|shit|bitch|damn|asshole|cunt|dick|pussy|bastard|slut)\b/i;
+
       if (forbiddenEndings.test(sentence)) {
         alert("This story cannot end. Try again with a new direction.");
+        return;
+      }
+
+      if (swearWords.test(sentence)) {
+        alert("⚠️ The Elders reject your vulgar invocation...");
         return;
       }
 
