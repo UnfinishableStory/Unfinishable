@@ -5,47 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unfinishable – The Infinite Story</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: #0d0d0d;
       color: #f0f0f0;
-    }
-
-    .info-corner {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 1.3rem;
-      font-weight: bold;
-      text-align: center;
-      line-height: 32px;
-      color: #ffffff;
-      background: radial-gradient(circle at center, #6a11cb 0%, #2575fc 100%);
-      box-shadow: 0 0 10px rgba(98, 0, 234, 0.6), 0 0 20px rgba(98, 0, 234, 0.3);
-      backdrop-filter: blur(2px);
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      z-index: 1000;
-      animation: pulse-glow 3s infinite ease-in-out;
-    }
-
-    .info-corner:hover {
-      transform: scale(1.2) rotate(3deg);
-      box-shadow: 0 0 16px rgba(144, 19, 254, 0.8), 0 0 30px rgba(144, 19, 254, 0.4);
-    }
-
-    @keyframes pulse-glow {
-      0%, 100% {
-        box-shadow: 0 0 10px rgba(98, 0, 234, 0.6), 0 0 20px rgba(98, 0, 234, 0.3);
-      }
-      50% {
-        box-shadow: 0 0 20px rgba(144, 19, 254, 0.9), 0 0 30px rgba(144, 19, 254, 0.5);
-      }
     }
 
     header {
@@ -77,10 +43,6 @@
       padding: 1rem;
       background-color: #1a1a1a;
       border-left: 4px solid #6a11cb;
-    }
-
-    .story-branch p {
-      margin: 0.5rem 0;
     }
 
     form {
@@ -121,11 +83,27 @@
       font-size: 0.9rem;
       color: #888;
     }
+
+    #cookies-policy {
+      max-width: 800px;
+      margin: 0 auto 4rem;
+      padding: 1rem;
+      background-color: #1a1a1a;
+      border-left: 4px solid #2575fc;
+    }
+
+    #cookies-policy h1, #cookies-policy h2, #cookies-policy h4 {
+      color: #8ab4ff;
+    }
+
+    #cookies-policy a {
+      color: #6a11cb;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <header>
-    <span class="info-corner" title="This is a collaborative story. Add one sentence to continue the tale. The tale never ends.">i</span>
     <h1>Unfinishable</h1>
     <p>A story that never ends. Add your sentence. Shape the multiverse.</p>
   </header>
@@ -148,10 +126,46 @@
       <textarea id="newSentence" placeholder="Continue the story..."></textarea>
       <button type="submit">Submit Sentence</button>
     </form>
+
+    <section id="cookies-policy">
+      <h1>Cookies Policy</h1>
+      <p>Last updated: July 24, 2025</p>
+      <p>This Cookies Policy explains what Cookies are and how We use them. This policy was generated with the <a href="https://www.freeprivacypolicy.com/free-cookies-policy-generator/" target="_blank">Free Cookies Policy Generator</a>.</p>
+      <p>We do not store sensitive personal information such as mailing addresses or account passwords in the Cookies We use.</p>
+
+      <h2>Interpretation and Definitions</h2>
+      <h4>Definitions</h4>
+      <ul>
+        <li><strong>Company</strong>: Unfinishable</li>
+        <li><strong>Cookies</strong>: Small files containing details of your browsing history</li>
+        <li><strong>Website</strong>: <a href="https://unfinishable.vercel.app" target="_blank">https://unfinishable.vercel.app</a></li>
+        <li><strong>You</strong>: The individual using this website</li>
+      </ul>
+
+      <h2>The Use of Cookies</h2>
+      <h4>Types of Cookies We Use</h4>
+      <ul>
+        <li><strong>Necessary</strong>: Session cookies to authenticate users and prevent abuse</li>
+        <li><strong>Functionality</strong>: Persistent cookies to remember preferences</li>
+      </ul>
+
+      <h4>Your Choices Regarding Cookies</h4>
+      <p>You may disable or delete cookies in your browser. Visit the browser's help pages for guidance.</p>
+      <p>Learn more: <a href="https://www.freeprivacypolicy.com/blog/cookies/" target="_blank">Cookies: What Do They Do?</a></p>
+
+      <h4>Contact</h4>
+      <ul>
+        <li>Email: pokalkhan123@gmail.com</li>
+      </ul>
+    </section>
   </main>
 
   <footer>
-    ✨ This story has no end. Only infinite beginnings.
+    <p>
+      <a href="#cookies-policy">Cookies Policy</a> | 
+      <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a> |
+      Version 1.1 • Last updated July 24, 2025
+    </p>
   </footer>
 
   <script>
@@ -219,9 +233,9 @@
       const sentence = textarea.value.trim();
       if (!sentence) return;
 
-      const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+            const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
       const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
-            const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
+      const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
 
       if (
         forbiddenEndings.test(sentence) ||
