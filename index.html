@@ -18,6 +18,7 @@
       padding: 2rem;
       text-align: center;
       background: linear-gradient(to right, #6a11cb, #2575fc);
+      position: relative;
     }
 
     header h1 {
@@ -29,6 +30,60 @@
       margin-top: 0.5rem;
       font-size: 1.2rem;
       color: #e0e0e0;
+    }
+
+    #info-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background-color: #6a11cb;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #6a11cb;
+      transition: transform 0.3s ease;
+    }
+
+    #info-button:hover {
+      transform: scale(1.1);
+    }
+
+    #info-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(13,13,13,0.95);
+      color: #f0f0f0;
+      padding: 2rem;
+      z-index: 9999;
+      overflow-y: auto;
+    }
+
+    #info-modal h2 {
+      color: #8ab4ff;
+    }
+
+    #info-modal a {
+      color: #6a11cb;
+      text-decoration: underline;
+    }
+
+    #close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
     }
 
     main {
@@ -76,42 +131,6 @@
       background-color: #1a5edb;
     }
 
-    #cookie-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #1a1a1a;
-      border-top: 2px solid #2575fc;
-      padding: 1.5rem 1rem;
-      font-size: 0.95rem;
-      color: #f0f0f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    #cookie-banner a {
-      color: #6a11cb;
-      text-decoration: underline;
-    }
-
-    #cookie-banner button {
-      background-color: #2575fc;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      margin-left: 8px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    #cookie-banner button:last-child {
-      background-color: #444;
-      color: #ccc;
-    }
-
     footer {
       text-align: center;
       padding: 2rem;
@@ -121,8 +140,8 @@
 
     footer a {
       color: #888;
-      text-decoration: none;
       margin: 0 0.5rem;
+      text-decoration: none;
     }
 
     footer a:hover {
@@ -134,6 +153,7 @@
   <header>
     <h1>Unfinishable</h1>
     <p>A story that never ends. Add your sentence. Shape the multiverse.</p>
+    <button id="info-button">ℹ️</button>
   </header>
 
   <main>
@@ -156,25 +176,22 @@
     </form>
   </main>
 
-  <div id="cookie-banner">
-    <div>
-      This site uses cookies. See our
-      <a href="#!" onclick="scrollToFooter()">Cookies Policy</a> and
-      <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a>.
-    </div>
-    <div>
-      <button onclick="acceptCookies()">Accept</button>
-      <button onclick="declineCookies()">Decline</button>
-    </div>
-  </div>
-
   <footer>
     <p>
-      <a href="#!" onclick="scrollToFooter()">Cookies Policy</a> |
-      <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a> |
-       Version 1.2 
+      <a href="#!" onclick="document.getElementById('info-modal').style.display='block'">Info</a> |
+      <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a>
     </p>
   </footer>
+
+  <div id="info-modal">
+    <button id="close-modal">✖</button>
+    <h2>Site Information</h2>
+    <p>This site uses cookies for essential functionality and user preferences. We do not store sensitive personal data.</p>
+    <p>Read our <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a> to learn more.</p>
+    <p><strong>Site:</strong> Unfinishable<br />
+    <strong>Maintained by:</strong> Pokal<br />
+    <strong>Contact:</strong> pokalkhan123@gmail.com</p>
+  </div>
 
   <script>
     const binId = "6881cd93f7e7a370d1ed0679";
@@ -261,26 +278,14 @@
 
     loadBranches();
 
-    function acceptCookies() {
-      localStorage.setItem('cookiesAccepted', 'true');
-      document.getElementById('cookie-banner').style.display = 'none';
-    }
-
-    function declineCookies() {
-      localStorage.setItem('cookiesAccepted', 'false');
-      document.getElementById('cookie-banner').style.display = 'none';
-    }
-
-    window.addEventListener('load', () => {
-      const consent = localStorage.getItem('cookiesAccepted');
-      if (consent === 'true' || consent === 'false') {
-        document.getElementById('cookie-banner').style.display = 'none';
-      }
+    // Modal handling for info
+    document.getElementById("info-button").addEventListener("click", () => {
+      document.getElementById("info-modal").style.display = "block";
     });
 
-    function scrollToFooter() {
-      document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById("close-modal").addEventListener("click", () => {
+      document.getElementById("info-modal").style.display = "none";
+    });
   </script>
 </body>
 </html>
