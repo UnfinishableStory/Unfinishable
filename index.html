@@ -136,12 +136,17 @@
         const data = await res.json();
         currentBranches = data.record;
 
+        const validBranches = currentBranches.filter(branch =>
+          branch.text && branch.text.trim() !== ""
+        );
+
         container.innerHTML = "";
-        if (currentBranches.length === 0) {
+        if (validBranches.length === 0) {
           container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
           return;
         }
-        currentBranches.forEach(branch => {
+
+        validBranches.forEach(branch => {
           const p = document.createElement("p");
           p.textContent = "— " + branch.text;
           container.appendChild(p);
