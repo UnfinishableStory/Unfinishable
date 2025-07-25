@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unfinishable – The Infinite Story</title>
 
-  <!-- SEO -->
+  <!-- SEO Metadata -->
   <meta name="description" content="Unfinishable is an infinite storytelling experience built with hand-coded HTML. Add your sentence. Shape the multiverse.">
   <meta name="keywords" content="Unfinishable, infinite storytelling, surreal web design, recursive narratives, hand-coded HTML, experimental websites, interactive fiction, narrative loops, glitch-inspired design, collaborative writing, branching stories, web-based narrative, abstract storytelling, immersive HTML project, sentence-driven fiction, multiverse web experience">
   <meta name="robots" content="index, follow">
@@ -13,12 +13,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
+  <!-- Core Styles -->
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background: #0d0d0d;
       color: #f0f0f0;
+      transition: filter 0.5s ease;
     }
     header {
       padding: 2rem;
@@ -126,11 +128,28 @@
       cursor: pointer;
       animation: pulseButton 2s infinite;
     }
+
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes pulseText { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-    @keyframes pulseButton { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    @keyframes pulseButton { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+    /* Flicker + Haze */
+    @keyframes flicker {
+      0%   { color: #2575fc; }
+      50%  { color: #ff3333; }
+      100% { color: #2575fc; }
+    }
+    .flicker-text {
+      animation: flicker 1s infinite;
+    }
+    .hazy-1 { filter: blur(1px) grayscale(10%); }
+    .hazy-2 { filter: blur(2px) grayscale(20%); }
+    .hazy-3 { filter: blur(3px) grayscale(30%); }
+    .hazy-4 { filter: blur(4px) grayscale(40%); }
+    .hazy-5 { filter: blur(5px) grayscale(60%) contrast(130%); }
   </style>
 </head>
+<!-- ==== Part 2: BODY ==== -->
 <body>
   <header>
     <h1>Unfinishable</h1>
@@ -168,7 +187,7 @@
   <!-- 🧪 Glitch Easter Egg Overlay -->
   <div id="glitch-overlay">
     <div class="glitch-message">
-      <p>You thought you could escape... didn't you...</p>
+      <p class="flicker-text">You thought you could escape... didn't you...</p>
       <button id="escape-btn">Escape</button>
     </div>
   </div>
@@ -177,146 +196,163 @@
     <p><a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a></p>
   </footer>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const binId = "6881cd93f7e7a370d1ed0679";
-    const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
-    const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
-    let currentBranches = [];
+  const binId = "6881cd93f7e7a370d1ed0679";
+  const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
+  const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
+  let currentBranches = [];
 
-    const form = document.getElementById("sentence-form");
-    const textarea = document.getElementById("newSentence");
-    const container = document.getElementById("storyBranches");
-    const cooldownContainer = document.getElementById("cooldown-container");
-    const cooldownBar = document.getElementById("cooldown-bar");
+  const form = document.getElementById("sentence-form");
+  const textarea = document.getElementById("newSentence");
+  const container = document.getElementById("storyBranches");
+  const cooldownContainer = document.getElementById("cooldown-container");
+  const cooldownBar = document.getElementById("cooldown-bar");
 
-    const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
-    const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
-    const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+m+n+|a[s$]+s+[h0o]*[l1!]*[e3]*|c[u@]+n+t+|d[i1!]+c*k+|p[u@]+s+[s$]+y+|b[a@]+s+[t]+[a@]*r+d+|s[l1!]+u+[@*]+t+)\b/i;
+  const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+  const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
+  const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+m+n+|a[s$]+s+[h0o]*[l1!]*[e3]*|c[u@]+n+t+|d[i1!]+c*k+|p[u@]+s+[s$]+y+|b[a@]+s+[t]+[a@]*r+d+|s[l1!]+u+[@*]+t+)\b/i;
 
-    async function loadBranches() {
-      container.innerHTML = "<p>Loading branches...</p>";
-      try {
-        const res = await fetch(`${apiUrl}/latest`, {
-          headers: { "X-Master-Key": apiKey }
-        });
-        const data = await res.json();
-        currentBranches = data.record || [];
-
-        const validBranches = currentBranches.filter(branch =>
-          branch.text && branch.text.trim() !== "" && !basicSwears.test(branch.text)
-        );
-
-        container.innerHTML = "";
-        if (validBranches.length === 0) {
-          container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
-          return;
-        }
-
-        validBranches.forEach(branch => {
-          const p = document.createElement("p");
-          p.textContent = "— " + branch.text;
-          container.appendChild(p);
-        });
-      } catch (err) {
-        console.error("Error loading branches:", err);
-        container.innerHTML = "<p>Failed to load branches.</p>";
-      }
-    }
-
-    async function saveBranch(text) {
-      try {
-        const updatedBranches = [...currentBranches, { text }];
-        await fetch(apiUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": apiKey
-          },
-          body: JSON.stringify(updatedBranches)
-        });
-        currentBranches = updatedBranches;
-        loadBranches();
-      } catch (err) {
-        console.error("Error saving branch:", err);
-      }
-    }
-
-    form.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const sentence = textarea.value.trim();
-      if (!sentence) {
-        alert("Please enter a sentence.");
-        return;
-      }
-
-      if (
-        basicSwears.test(sentence) ||
-        stylizedSwears.test(sentence) ||
-        forbiddenEndings.test(sentence)
-      ) {
-        alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
-        return;
-      }
-
-      await saveBranch(sentence);
-      textarea.value = "";
-
-      form.style.display = "none";
-      cooldownContainer.style.display = "block";
-      cooldownBar.style.width = "0%";
-
-      setTimeout(() => { cooldownBar.style.width = "100%"; }, 50);
-      setTimeout(() => {
-        form.style.display = "flex";
-        cooldownContainer.style.display = "none";
-        cooldownBar.style.width = "0%";
-      }, 10000);
-    });
-
-    loadBranches();
-
-    // 🧪 Glitch Easter Egg Logic
-    const inputFields = document.querySelectorAll("input, textarea");
-    const overlay = document.getElementById("glitch-overlay");
-    const escapeBtn = document.getElementById("escape-btn");
-
-    inputFields.forEach(input => {
-      input.addEventListener("input", (e) => {
-        if (e.target.value.toLowerCase().includes("unfinishable")) {
-          triggerGlitch();
-        }
+  async function loadBranches() {
+    container.innerHTML = "<p>Loading branches...</p>";
+    try {
+      const res = await fetch(`${apiUrl}/latest`, {
+        headers: { "X-Master-Key": apiKey }
       });
-    });
+      const data = await res.json();
+      currentBranches = data.record || [];
 
-    escapeBtn.addEventListener("click", () => {
-      console.warn("ACCESS DENIED. The loop continues.");
-      showTrap();
-    });
+      const validBranches = currentBranches.filter(branch =>
+        branch.text && branch.text.trim() !== "" && !basicSwears.test(branch.text)
+      );
 
-    function triggerGlitch() {
-      overlay.style.display = "flex";
-      console.warn("You triggered the anomaly. The loop begins.");
+      container.innerHTML = "";
+      if (validBranches.length === 0) {
+        container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
+        return;
+      }
+
+      validBranches.forEach(branch => {
+        const p = document.createElement("p");
+        p.textContent = "— " + branch.text;
+        container.appendChild(p);
+      });
+    } catch (err) {
+      console.error("Error loading branches:", err);
+      container.innerHTML = "<p>Failed to load branches.</p>";
+    }
+  }
+
+  async function saveBranch(text) {
+    try {
+      const updatedBranches = [...currentBranches, { text }];
+      await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": apiKey
+        },
+        body: JSON.stringify(updatedBranches)
+      });
+      currentBranches = updatedBranches;
+      loadBranches();
+    } catch (err) {
+      console.error("Error saving branch:", err);
+    }
+  }
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const sentence = textarea.value.trim();
+    if (!sentence) {
+      alert("Please enter a sentence.");
+      return;
     }
 
-    function showTrap() {
-      // ⚠️ Preserve dark mode styling
-      document.body.style.background = "#0d0d0d";
-      document.body.innerHTML = `
-        <div style="
-          color: red;
-          font-family: monospace;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          flex-direction: column;
-        ">
-          <p style="font-size: 1.4rem; margin-bottom: 20px;">There is no way out.</p>
-          <p style="font-size: 1.4rem;">You're part of it now.</p>
-        </div>
-      `;
+    if (
+      basicSwears.test(sentence) ||
+      stylizedSwears.test(sentence) ||
+      forbiddenEndings.test(sentence)
+    ) {
+      alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
+      return;
+    }
+
+    await saveBranch(sentence);
+    textarea.value = "";
+
+    form.style.display = "none";
+    cooldownContainer.style.display = "block";
+    cooldownBar.style.width = "0%";
+
+    setTimeout(() => { cooldownBar.style.width = "100%"; }, 50);
+    setTimeout(() => {
+      form.style.display = "flex";
+      cooldownContainer.style.display = "none";
+      cooldownBar.style.width = "0%";
+    }, 10000);
+  });
+
+  loadBranches();
+
+  // 🧪 GLITCH EASTER EGG
+  const inputFields = document.querySelectorAll("input, textarea");
+  const overlay = document.getElementById("glitch-overlay");
+  const escapeBtn = document.getElementById("escape-btn");
+  let ignoredEscapeCount = 0;
+
+  inputFields.forEach(input => {
+    input.addEventListener("input", (e) => {
+      if (e.target.value.toLowerCase().includes("unfinishable")) {
+        triggerGlitch();
+      }
+    });
+  });
+
+  escapeBtn.addEventListener("click", () => {
+    console.warn("ACCESS DENIED. The loop continues.");
+    showTrap();
+  });
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape") {
+      ignoredEscapeCount++;
+      const body = document.body;
+
+      if (ignoredEscapeCount === 3) {
+        body.classList.add("hazy-1");
+      } else if (ignoredEscapeCount === 5) {
+        body.classList.replace("hazy-1", "hazy-2");
+      } else if (ignoredEscapeCount === 7) {
+        body.classList.replace("hazy-2", "hazy-3");
+      } else if (ignoredEscapeCount === 9) {
+        body.classList.replace("hazy-3", "hazy-4");
+      } else if (ignoredEscapeCount >= 11) {
+        body.classList.replace("hazy-4", "hazy-5");
+      }
     }
   });
+
+  function triggerGlitch() {
+    overlay.style.display = "flex";
+    console.warn("You triggered the anomaly. The loop begins.");
+  }
+
+  function showTrap() {
+    document.body.innerHTML = `
+      <div style="
+        color: red;
+        font-family: monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        background: #0d0d0d;
+      ">
+        <p style="font-size: 1.4rem; margin-bottom: 20px;">There is no way out.</p>
+        <p style="font-size: 1.4rem; color: #ff3333;" class="flicker-text">You ignored the warnings.</p>
+      </div>
+    `;
+  }
 </script>
 </body>
 </html>
