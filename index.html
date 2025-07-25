@@ -84,6 +84,26 @@
       background-color: #1a5edb;
     }
 
+    #cooldown-container {
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+    }
+
+    .cooldown-bar {
+      height: 6px;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      width: 0%;
+      border-radius: 3px;
+      transition: width 10s linear;
+    }
+
+    .cooldown-text {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 0.5rem;
+    }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -134,7 +154,13 @@
       <textarea id="newSentence" placeholder="Continue the story..."></textarea>
       <button type="submit">Submit Sentence</button>
     </form>
+
+    <div id="cooldown-container">
+      <div class="cooldown-bar" id="cooldown-bar"></div>
+      <p class="cooldown-text">🕒 The multiverse needs a breath... Try again soon.</p>
+    </div>
   </main>
+
   <footer>
     <p>
       <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a>
@@ -150,6 +176,9 @@
     const form = document.getElementById("sentence-form");
     const textarea = document.getElementById("newSentence");
     const container = document.getElementById("storyBranches");
+    const cooldownContainer = document.getElementById("cooldown-container");
+    const cooldownBar = document.getElementById("cooldown-bar");
+    const button = form.querySelector("button");
 
     async function loadBranches() {
       try {
@@ -202,29 +231,71 @@
     }
 
     form.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const sentence = textarea.value.trim();
-      if (!sentence) return;
+  e.preventDefault();
+  const sentence = textarea.value.trim();
+  if (!sentence) return;
 
-      const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
-      const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
-      const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+[m]+[n]+|a[s$]+[s$]+[h0o]*[l1!]*[e3]*|c[u@]+[n]+[t]+|d[i1!]+[c*k]+|p[u@]+[s$]+[s$]+[y]+|b[a@]+[s$]+[t]+[a@]*[r]+[d]+|s[l1!]+[u@]+[t7]+)\b/i;
+  const forbiddenEndings = /\b(
+    the\s+end|
+    end\s+of\s+story|
+    this\s+is\s+the\s+end|
+    ^end$|
+    \bend\b|
+    story\s+is\s+over|
+    the\s+story\s+ends|
+    end\s+of\s+this\s+story|
+    this\s+story\s+is\s+finished|
+    it\s+is\s+over
+  )\b/i;
 
-      if (
-        forbiddenEndings.test(sentence) ||
-        basicSwears.test(sentence) ||
-        stylizedSwears.test(sentence)
-      ) {
-        alert("⚠️ The Elders reject your vulgar invocation...");
-        textarea.value = "";
-        return;
-      }
+  const basicSwears = /\b(
+    bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard
+  )\b/i;
 
-      await saveBranch(sentence);
-      textarea.value = "";
-    });
+  const stylizedSwears = /\b(
+    f[u@*]+[c*k]+|
+    s[h#*]+[i1!]+[t7]+|
+    b[i1!]+[t7]+[c*k]+|
+    d[a@]+m+n+|
+    a[s$]+s+[h0o]*[l1!]*[e3]*|
+    c[u@]+n+t+|
+    d[i1!]+c*k+|
+    p[u@]+s+[s$]+y+|
+    b[a@]+s+[t]+[a@]*r+d+|
+    s[l1!]+u+[@*]+t+
+  )/i;
 
-    loadBranches();
+  if (
+    basicSwears.test(sentence) ||
+    stylizedSwears.test(sentence) ||
+    forbiddenEndings.test(sentence)
+  ) {
+    alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
+    return;
+  }
+
+  // Save the new branch
+  await saveBranch(sentence);
+  textarea.value = "";
+
+  // Trigger cooldown
+  form.style.display = "none";
+  cooldownContainer.style.display = "block";
+  cooldownBar.style.width = "0%";
+
+  setTimeout(() => {
+    cooldownBar.style.width = "100%";
+  }, 50);
+
+  setTimeout(() => {
+    form.style.display = "flex";
+    cooldownContainer.style.display = "none";
+    cooldownBar.style.width = "0%";
+  }, 10000);
+});
+
+loadBranches();
+
   </script>
 </body>
 </html>
