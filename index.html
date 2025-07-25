@@ -7,119 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #0d0d0d;
-      color: #f0f0f0;
-    }
-
-    header {
-      padding: 2rem;
-      text-align: center;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-
-    header p {
-      margin-top: 0.5rem;
-      font-size: 1.2rem;
-      color: #e0e0e0;
-    }
-
-    .instructions-card {
-      background-color: #1a1a1a;
-      border-left: 4px solid #6a11cb;
-      padding: 1rem;
-      margin: 2rem auto;
-      max-width: 800px;
-    }
-
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .story-branch {
-      margin-bottom: 2rem;
-      padding: 1rem;
-      background-color: #1a1a1a;
-      border-left: 4px solid #6a11cb;
-    }
-
-    form {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-    }
-
-    textarea {
-      padding: 1rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      resize: vertical;
-      min-height: 80px;
-      background-color: #2a2a2a;
-      color: #fff;
-    }
-
-    button {
-      margin-top: 1rem;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background-color: #2575fc;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #1a5edb;
-    }
-
-    #cooldown-container {
-      margin-top: 1rem;
-      text-align: center;
-      display: none;
-    }
-
-    .cooldown-bar {
-      height: 6px;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      width: 0%;
-      border-radius: 3px;
-      transition: width 10s linear;
-    }
-
-    .cooldown-text {
-      font-size: 0.9rem;
-      color: #aaa;
-      margin-top: 0.5rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    footer a {
-      color: #888;
-      margin: 0 0.5rem;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      color: #6a11cb;
-    }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: #0d0d0d; color: #f0f0f0; }
+    header { padding: 2rem; text-align: center; background: linear-gradient(to right, #6a11cb, #2575fc); }
+    header h1 { margin: 0; font-size: 2.5rem; }
+    header p { margin-top: 0.5rem; font-size: 1.2rem; color: #e0e0e0; }
+    .instructions-card, .story-branch { background: #1a1a1a; border-left: 4px solid #6a11cb; padding: 1rem; margin: 2rem auto; max-width: 800px; }
+    main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+    form { margin-top: 2rem; display: flex; flex-direction: column; }
+    textarea { padding: 1rem; font-size: 1rem; border: none; border-radius: 4px; resize: vertical; min-height: 80px; background: #2a2a2a; color: #fff; }
+    button { margin-top: 1rem; padding: 0.75rem; font-size: 1rem; background: #2575fc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #1a5edb; }
+    #cooldown-container { margin-top: 1rem; text-align: center; display: none; }
+    .cooldown-bar { height: 6px; background: linear-gradient(to right, #6a11cb, #2575fc); width: 0%; border-radius: 3px; transition: width 10s linear; }
+    .cooldown-text { font-size: 0.9rem; color: #aaa; margin-top: 0.5rem; }
+    footer { text-align: center; padding: 2rem; font-size: 0.9rem; color: #888; }
+    footer a { color: #888; margin: 0 0.5rem; text-decoration: none; }
+    footer a:hover { color: #6a11cb; }
   </style>
 </head>
 <body>
@@ -130,10 +33,7 @@
 
   <section class="instructions-card">
     <h2>📜 How to Continue the Story</h2>
-    <p>
-      Add <strong>one sentence</strong> to continue the tale.<br>
-      Avoid profanity and endings — this story never stops.
-    </p>
+    <p>Add <strong>one sentence</strong> to continue the tale.<br> Avoid profanity and endings — this story never stops.</p>
   </section>
 
   <main>
@@ -162,140 +62,112 @@
   </main>
 
   <footer>
-    <p>
-      <a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a>
-    </p>
+    <p><a href="https://www.freeprivacypolicy.com/live/44cf2d43-9d6d-4eeb-ba4f-c40b39b49738" target="_blank">Privacy Policy</a></p>
   </footer>
 
   <script>
-    const binId = "6881cd93f7e7a370d1ed0679";
-    const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
-    const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
-    let currentBranches = [];
+    document.addEventListener("DOMContentLoaded", () => {
+      const binId = "6881cd93f7e7a370d1ed0679";
+      const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
+      const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
+      let currentBranches = [];
 
-    const form = document.getElementById("sentence-form");
-    const textarea = document.getElementById("newSentence");
-    const container = document.getElementById("storyBranches");
-    const cooldownContainer = document.getElementById("cooldown-container");
-    const cooldownBar = document.getElementById("cooldown-bar");
-    const button = form.querySelector("button");
+      const form = document.getElementById("sentence-form");
+      const textarea = document.getElementById("newSentence");
+      const container = document.getElementById("storyBranches");
+      const cooldownContainer = document.getElementById("cooldown-container");
+      const cooldownBar = document.getElementById("cooldown-bar");
 
-    async function loadBranches() {
-      try {
-        const res = await fetch(`${apiUrl}/latest`, {
-          headers: { "X-Master-Key": apiKey }
-        });
-        const data = await res.json();
-        currentBranches = data.record;
+      const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+      const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
+      const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+m+n+|a[s$]+s+[h0o]*[l1!]*[e3]*|c[u@]+n+t+|d[i1!]+c*k+|p[u@]+s+[s$]+y+|b[a@]+s+[t]+[a@]*r+d+|s[l1!]+u+[@*]+t+)\b/i;
 
-        const blockedDisplayWords = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
-        const validBranches = currentBranches.filter(branch =>
-          branch.text &&
-          branch.text.trim() !== "" &&
-          !blockedDisplayWords.test(branch.text)
-        );
+      async function loadBranches() {
+        try {
+          const res = await fetch(`${apiUrl}/latest`, {
+            headers: { "X-Master-Key": apiKey }
+          });
+          const data = await res.json();
+          currentBranches = data.record || [];
 
-        container.innerHTML = "";
-        if (validBranches.length === 0) {
-          container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
+          const blockedDisplayWords = basicSwears;
+          const validBranches = currentBranches.filter(branch =>
+            branch.text && branch.text.trim() !== "" && !blockedDisplayWords.test(branch.text)
+          );
+
+          container.innerHTML = "";
+          if (validBranches.length === 0) {
+            container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
+            return;
+          }
+
+          validBranches.forEach(branch => {
+            const p = document.createElement("p");
+            p.textContent = "— " + branch.text;
+            container.appendChild(p);
+          });
+        } catch (err) {
+          console.error("Error loading branches:", err);
+          container.innerHTML = "<p>Failed to load branches.</p>";
+        }
+      }
+
+      async function saveBranch(text) {
+        try {
+          const updatedBranches = [...currentBranches, { text }];
+          await fetch(apiUrl, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Master-Key": apiKey
+            },
+            body: JSON.stringify(updatedBranches)
+          });
+          currentBranches = updatedBranches;
+          loadBranches();
+        } catch (err) {
+          console.error("Error saving branch:", err);
+        }
+      }
+
+      form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const sentence = textarea.value.trim();
+        console.log("Submitted:", sentence);
+        if (!sentence) {
+          alert("Please enter a sentence.");
           return;
         }
 
-        validBranches.forEach(branch => {
-          const p = document.createElement("p");
-          p.textContent = "— " + branch.text;
-          container.appendChild(p);
-        });
-      } catch (err) {
-        console.error("Error loading branches:", err);
-        container.innerHTML = "<p>Failed to load branches.</p>";
-      }
-    }
+        if (
+          basicSwears.test(sentence) ||
+          stylizedSwears.test(sentence) ||
+          forbiddenEndings.test(sentence)
+        ) {
+          alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
+          return;
+        }
 
-    async function saveBranch(text) {
-      try {
-        const updatedBranches = [...currentBranches, { text }];
-        await fetch(apiUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": apiKey
-          },
-          body: JSON.stringify(updatedBranches)
-        });
-        currentBranches = updatedBranches;
-        loadBranches();
-      } catch (err) {
-        console.error("Error saving branch:", err);
-      }
-    }
+        await saveBranch(sentence);
+        textarea.value = "";
 
-    form.addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const sentence = textarea.value.trim();
-  if (!sentence) return;
+                form.style.display = "none";
+        cooldownContainer.style.display = "block";
+        cooldownBar.style.width = "0%";
 
-  const forbiddenEndings = /\b(
-    the\s+end|
-    end\s+of\s+story|
-    this\s+is\s+the\s+end|
-    ^end$|
-    \bend\b|
-    story\s+is\s+over|
-    the\s+story\s+ends|
-    end\s+of\s+this\s+story|
-    this\s+story\s+is\s+finished|
-    it\s+is\s+over
-  )\b/i;
+        setTimeout(() => {
+          cooldownBar.style.width = "100%";
+        }, 50);
 
-  const basicSwears = /\b(
-    bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard
-  )\b/i;
+        setTimeout(() => {
+          form.style.display = "flex";
+          cooldownContainer.style.display = "none";
+          cooldownBar.style.width = "0%";
+        }, 10000);
+      });
 
-  const stylizedSwears = /\b(
-    f[u@*]+[c*k]+|
-    s[h#*]+[i1!]+[t7]+|
-    b[i1!]+[t7]+[c*k]+|
-    d[a@]+m+n+|
-    a[s$]+s+[h0o]*[l1!]*[e3]*|
-    c[u@]+n+t+|
-    d[i1!]+c*k+|
-    p[u@]+s+[s$]+y+|
-    b[a@]+s+[t]+[a@]*r+d+|
-    s[l1!]+u+[@*]+t+
-  )/i;
-
-  if (
-    basicSwears.test(sentence) ||
-    stylizedSwears.test(sentence) ||
-    forbiddenEndings.test(sentence)
-  ) {
-    alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
-    return;
-  }
-
-  // Save the new branch
-  await saveBranch(sentence);
-  textarea.value = "";
-
-  // Trigger cooldown
-  form.style.display = "none";
-  cooldownContainer.style.display = "block";
-  cooldownBar.style.width = "0%";
-
-  setTimeout(() => {
-    cooldownBar.style.width = "100%";
-  }, 50);
-
-  setTimeout(() => {
-    form.style.display = "flex";
-    cooldownContainer.style.display = "none";
-    cooldownBar.style.width = "0%";
-  }, 10000);
-});
-
-loadBranches();
-
+      loadBranches();
+    });
   </script>
 </body>
 </html>
