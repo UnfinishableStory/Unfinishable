@@ -178,45 +178,56 @@
   </div>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const binId = "6881cd93f7e7a370d1ed0679";
-    const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
-    const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
-    let currentBranches = [];
+  const binId = "6881cd93f7e7a370d1ed0679";
+  const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
+  const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
+  let currentBranches = [];
 
-    const form = document.getElementById("sentence-form");
-    const textarea = document.getElementById("newSentence");
-    const container = document.getElementById("storyBranches");
-    const cooldownContainer = document.getElementById("cooldown-container");
-    const cooldownBar = document.getElementById("cooldown-bar");
+  const form = document.getElementById("sentence-form");
+  const textarea = document.getElementById("newSentence");
+  const container = document.getElementById("storyBranches");
+  const cooldownContainer = document.getElementById("cooldown-container");
+  const cooldownBar = document.getElementById("cooldown-bar");
 
-    const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
-    const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
-    const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+m+n+|a[s$]+s+[h0o]*[l1!]*[e3]*|c[u@]+n+t+|d[i1!]+c*k+|p[u@]+s+[s$]+y+|b[a@]+s+[t]+[a@]*r+d+|s[l1!]+u+[@*]+t+)\b/i;
+  const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
+  const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
+  const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+m+n+|a[s$]+s+[h0o]*[l1!]*[e3]*|c[u@]+n+t+|d[i1!]+c*k+|p[u@]+s+[s$]+y+|b[a@]+s+[t]+[a@]*r+d+|s[l1!]+u+[@*]+t+)\b/i;
 
-    async function loadBranches() {
-      container.innerHTML = "<p>Loading branches...</p>";
-      try {
-        const res = await fetch(`${apiUrl}/latest`, {
-          headers: { "X-Master-Key": apiKey }
-        });
-        const data = await res.json();
-        currentBranches = data.record || [];
+  async function loadBranches() {
+    container.innerHTML = "<p>Loading branches...</p>";
+    try {
+      const res = await fetch(`${apiUrl}/latest`, {
+        headers: { "X-Master-Key": apiKey }
+      });
+      const data = await res.json();
+      currentBranches = data.record || [];
 
-        const validBranches = currentBranches.filter(branch =>
-          branch.text && branch.text.trim() !== "" && !basicSwears.test(branch.text)
-        );
+      const validBranches = currentBranches.filter(branch =>
+        branch.text &&
+        branch.text.trim() !== "" &&
+        !basicSwears.test(branch.text) &&
+        !stylizedSwears.test(branch.text) &&
+        !forbiddenEndings.test(branch.text)
+      );
 
-        container.innerHTML = "";
-        if (validBranches.length === 0) {
-          container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
-          return;
-        }
+      container.innerHTML = "";
+      if (validBranches.length === 0) {
+        container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
+        return;
+      }
 
-        validBranches.forEach(branch => {
-          const p = document.createElement("p");
-          p.textContent = "— " + branch.text;
-          container.appendChild(p);
-        });
+      validBranches.forEach(branch => {
+        const p = document.createElement("p");
+        p.textContent = "— " + branch.text;
+        container.appendChild(p);
+      });
+    } catch (err) {
+      console.error("Error loading branches:", err);
+      container.innerHTML = "<p>Failed to load branches.</p>";
+    }
+  }
+});
+
       } catch (err) {
         console.error("Error loading branches:", err);
         container.innerHTML = "<p>Failed to load branches.</p>";
