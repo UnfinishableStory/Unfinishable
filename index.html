@@ -176,8 +176,8 @@
       <button id="escape-btn">Escape</button>
     </div>
   </div>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
+ <script>
+document.addEventListener("DOMContentLoaded", () => {
   const binId = "6881cd93f7e7a370d1ed0679";
   const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
   const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
@@ -226,108 +226,103 @@
       container.innerHTML = "<p>Failed to load branches.</p>";
     }
   }
-});
 
-      } catch (err) {
-        console.error("Error loading branches:", err);
-        container.innerHTML = "<p>Failed to load branches.</p>";
-      }
-    }
-
-    async function saveBranch(text) {
-      try {
-        const updatedBranches = [...currentBranches, { text }];
-        await fetch(apiUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": apiKey
-          },
-          body: JSON.stringify(updatedBranches)
-        });
-        currentBranches = updatedBranches;
-        loadBranches();
-      } catch (err) {
-        console.error("Error saving branch:", err);
-      }
-    }
-
-    form.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const sentence = textarea.value.trim();
-      if (!sentence) {
-        alert("Please enter a sentence.");
-        return;
-      }
-
-      if (
-        basicSwears.test(sentence) ||
-        stylizedSwears.test(sentence) ||
-        forbiddenEndings.test(sentence)
-      ) {
-        alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
-        return;
-      }
-
-      await saveBranch(sentence);
-      textarea.value = "";
-
-      form.style.display = "none";
-      cooldownContainer.style.display = "block";
-      cooldownBar.style.width = "0%";
-
-      setTimeout(() => { cooldownBar.style.width = "100%"; }, 50);
-      setTimeout(() => {
-        form.style.display = "flex";
-        cooldownContainer.style.display = "none";
-        cooldownBar.style.width = "0%";
-      }, 10000);
-    });
-
-    loadBranches();
-
-    // 🧪 Glitch Easter Egg Logic
-    const inputFields = document.querySelectorAll("input, textarea");
-    const overlay = document.getElementById("glitch-overlay");
-    const escapeBtn = document.getElementById("escape-btn");
-
-    inputFields.forEach(input => {
-      input.addEventListener("input", (e) => {
-        if (e.target.value.toLowerCase().includes("unfinishable")) {
-          triggerGlitch();
-        }
+  async function saveBranch(text) {
+    try {
+      const updatedBranches = [...currentBranches, { text }];
+      await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": apiKey
+        },
+        body: JSON.stringify(updatedBranches)
       });
-    });
+      currentBranches = updatedBranches;
+      loadBranches();
+    } catch (err) {
+      console.error("Error saving branch:", err);
+    }
+  }
 
-    escapeBtn.addEventListener("click", () => {
-      console.warn("ACCESS DENIED. The loop continues.");
-      showTrap();
-    });
-
-    function triggerGlitch() {
-      overlay.style.display = "flex";
-      console.warn("You triggered the anomaly. The loop begins.");
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const sentence = textarea.value.trim();
+    if (!sentence) {
+      alert("Please enter a sentence.");
+      return;
     }
 
-    function showTrap() {
-      // ⚠️ Preserve dark mode styling
-      document.body.style.background = "#0d0d0d";
-      document.body.innerHTML = `
-        <div style="
-          color: red;
-          font-family: monospace;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          flex-direction: column;
-        ">
-          <p style="font-size: 1.4rem; margin-bottom: 20px;">There is no way out.</p>
-          <p style="font-size: 1.4rem;">You're part of it now.</p>
-        </div>
-      `;
+    if (
+      basicSwears.test(sentence) ||
+      stylizedSwears.test(sentence) ||
+      forbiddenEndings.test(sentence)
+    ) {
+      alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
+      return;
     }
+
+    await saveBranch(sentence);
+    textarea.value = "";
+
+    // ⏳ Cooldown logic
+    form.style.display = "none";
+    cooldownContainer.style.display = "block";
+    cooldownBar.style.width = "0%";
+
+    setTimeout(() => { cooldownBar.style.width = "100%"; }, 50);
+    setTimeout(() => {
+      form.style.display = "flex";
+      cooldownContainer.style.display = "none";
+      cooldownBar.style.width = "0%";
+    }, 10000);
   });
+
+  loadBranches();
+
+  // 🧪 Glitch Easter Egg Logic
+  const inputFields = document.querySelectorAll("input, textarea");
+  const overlay = document.getElementById("glitch-overlay");
+  const escapeBtn = document.getElementById("escape-btn");
+
+  inputFields.forEach(input => {
+    input.addEventListener("input", (e) => {
+      if (e.target.value.toLowerCase().includes("unfinishable")) {
+        triggerGlitch();
+      }
+    });
+  });
+
+  escapeBtn.addEventListener("click", () => {
+    console.warn("ACCESS DENIED. The loop continues.");
+    showTrap();
+  });
+
+  function triggerGlitch() {
+    overlay.style.display = "flex";
+    console.warn("You triggered the anomaly. The loop begins.");
+  }
+
+  function showTrap() {
+    // ⚠️ Preserve dark mode styling
+    document.body.style.background = "#0d0d0d";
+    document.body.innerHTML = `
+      <div style="
+        color: red;
+        font-family: monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+      ">
+        <p style="font-size: 1.4rem; margin-bottom: 20px;">There is no way out.</p>
+        <p style="font-size: 1.4rem;">You're part of it now.</p>
+      </div>
+    `;
+  }
+});
 </script>
 </body>
 </html>
+ 
