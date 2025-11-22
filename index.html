@@ -1,322 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Unfinishable – The Infinite Story</title>
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-  <!-- SEO -->
-  <meta name="description" content="Unfinishable is an infinite storytelling experience built with hand-coded HTML. Add your sentence. Shape the multiverse.">
-  <meta name="keywords" content="Unfinishable, infinite storytelling, surreal web design, recursive narratives, hand-coded HTML, experimental websites, interactive fiction, narrative loops, glitch-inspired design, collaborative writing, branching stories, web-based narrative, abstract storytelling, immersive HTML project, sentence-driven fiction, multiverse web experience">
-  <meta name="robots" content="index, follow">
-  <meta name="google-site-verification" content="cSxBV8SO64YJqqEGyVwAyY9dN7e4J-VoKU0DL4ZvVVk" />
-  <meta name="google-adsense-account" content="pub-1501899281611835" />
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1501899281611835" crossorigin="anonymous"></script>
-  <link rel="canonical" href="https://unfinishable.vercel.app">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #0d0d0d;
-      color: #f0f0f0;
+      padding: 20px;
     }
-    header {
-      padding: 2rem;
-      text-align: center;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-    }
-    header h1 { margin: 0; font-size: 2.5rem; }
-    header p { margin-top: 0.5rem; font-size: 1.2rem; color: #e0e0e0; }
 
-    .instructions-card, .story-branch {
-      background: #1a1a1a;
-      border-left: 4px solid #6a11cb;
-      padding: 1rem;
-      margin: 2rem auto;
-      max-width: 800px;
-    }
-    main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-
-    form {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-    }
-    textarea {
-      padding: 1rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      resize: vertical;
-      min-height: 80px;
-      background: #2a2a2a;
-      color: #fff;
-    }
-    button {
-      margin-top: 1rem;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background: #2575fc;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover { background-color: #1a5edb; }
-
+    /* Cooldown bar styling */
     #cooldown-container {
-      margin-top: 1rem;
-      text-align: center;
       display: none;
+      width: 100%;
+      background: #ddd;
+      height: 20px;
+      margin-bottom: 10px;
     }
-    .cooldown-bar {
-      height: 6px;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
+    #cooldown-bar {
+      height: 100%;
       width: 0%;
-      border-radius: 3px;
+      background: #4caf50;
       transition: width 10s linear;
     }
-    .cooldown-text {
-      font-size: 0.9rem;
-      color: #aaa;
-      margin-top: 0.5rem;
-    }
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #888;
-    }
-    footer a {
-      color: #888;
-      margin: 0 0.5rem;
-      text-decoration: none;
-    }
-    footer a:hover { color: #6a11cb; }
-
-    /* Easter Egg Overlay */
+    /* Glitch overlay styling */
     #glitch-overlay {
+      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: black;
-      z-index: 9999;
-      display: none;
-      flex-direction: column;
+      background: rgba(0,0,0,0.9);
+      color: lime;
+      font-family: monospace;
       justify-content: center;
       align-items: center;
-      font-family: monospace;
-      color: #0ff;
-      animation: fadeIn 1s ease forwards;
+      flex-direction: column;
+      z-index: 9999;
     }
-    .glitch-message p {
-      font-size: 1.8rem;
-      text-align: center;
-      text-shadow: 0 0 6px #0ff;
-      animation: pulseText 3s infinite;
-    }
-    #escape-btn {
+
+    /* Message list styling */
+    #message-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #fff;
       margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      background: transparent;
-      border: 1px solid #0ff;
-      color: #0ff;
-      cursor: pointer;
-      animation: pulseButton 2s infinite;
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes pulseText { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-    @keyframes pulseButton { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+    #load-more {
+      margin-top: 10px;
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Unfinishable</h1>
-    <p>A story that never ends. Add your sentence. Shape the multiverse.</p>
-  </header>
+  <!-- Form for input -->
+  <form id="form" style="display:flex; flex-direction:column; gap:10px;">
+    <input type="text" placeholder="Type something..." />
+    <textarea placeholder="Or write more..."></textarea>
+    <button type="submit">Submit</button>
+  </form>
 
-  <section class="instructions-card">
-    <h2>📜 How to Continue the Story</h2>
-    <p>Add <strong>one sentence</strong> to continue the root sentence, once a branch is added continue it.<br> Avoid profanity and endings — this story never stops...</p>
-  </section>
-
-  <main>
-    <section class="story-branch">
-      <h2>🌱 Root Sentence</h2>
-      <p>Once, in a forgotten corner of the universe, a single spark refused to fade.</p>
-    </section>
-
-    <section class="story-branch" id="branch-section">
-      <h2>🌿 Branches</h2>
-      <div id="storyBranches"></div>
-    </section>
-
-    <form id="sentence-form">
-      <label for="newSentence"><strong>Add your sentence:</strong></label>
-      <textarea id="newSentence" placeholder="Continue the story..."></textarea>
-      <button type="submit">Submit Sentence</button>
-    </form>
-
-    <div id="cooldown-container">
-      <div class="cooldown-bar" id="cooldown-bar"></div>
-      <p class="cooldown-text">🕒 The multiverse needs a breath... Try again soon.</p>
-    </div>
-  </main>
-
-  <!-- 🧪 Glitch Easter Egg Overlay -->
-  <div id="glitch-overlay">
-    <div class="glitch-message">
-      <p>You thought you could escape... "PATHETIC"...</p>
-      <button id="escape-btn">Escape</button>
-    </div>
+  <!-- Cooldown container -->
+  <div id="cooldown-container">
+    <div id="cooldown-bar"></div>
   </div>
+
+  <!-- Glitch overlay -->
+  <div id="glitch-overlay">
+    <p>You triggered the anomaly. The loop begins.</p>
+    <button id="escape-btn">Escape?</button>
+  </div>
+
+  <!-- Message list with pagination -->
+  <ul id="message-list"></ul>
+  <button id="load-more">Load More</button>
+
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const binId = "6881cd93f7e7a370d1ed0679";
-    const apiKey = "$2a$10$2w6uVW6XQRmenExG0Bj4W.2scp1Gis0Wy285f6QjdTmH3jqvrHtiq";
-    const apiUrl = `https://api.jsonbin.io/v3/b/${binId}`;
-    let currentBranches = [];
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("form");
+  const cooldownContainer = document.getElementById("cooldown-container");
+  const cooldownBar = document.getElementById("cooldown-bar");
+  const inputFields = document.querySelectorAll("input, textarea");
+  const overlay = document.getElementById("glitch-overlay");
+  const escapeBtn = document.getElementById("escape-btn");
+  const messageList = document.getElementById("message-list");
+  const loadMoreBtn = document.getElementById("load-more");
 
-    const form = document.getElementById("sentence-form");
-    const textarea = document.getElementById("newSentence");
-    const container = document.getElementById("storyBranches");
-    const cooldownContainer = document.getElementById("cooldown-container");
-    const cooldownBar = document.getElementById("cooldown-bar");
+  // 📝 Message storage
+  let messages = [];
+  let visibleCount = 20;
 
-    const forbiddenEndings = /\b(the\s+end|end\s+of\s+story|this\s+is\s+the\s+end|^end$|\bend\b|story\s+is\s+over|the\s+story\s+ends|end\s+of\s+this\s+story|this\s+story\s+is\s+finished|it\s+is\s+over)\b/i;
-    const basicSwears = /\b(bitch|fuck|shit|cunt|asshole|damn|dick|pussy|slut|bastard)\b/i;
-    const stylizedSwears = /\b(f[u@*]+[c*k]+|s[h#*]+[i1!]+[t7]+|b[i1!]+[t7]+[c*k]+|d[a@]+m+n+|a[s$]+s+[h0o]*[l1!]*[e3]*|c[u@]+n+t+|d[i1!]+c*k+|p[u@]+s+[s$]+y+|b[a@]+s+[t]+[a@]*r+d+|s[l1!]+u+[@*]+t+)\b/i;
-
-    async function loadBranches() {
-      container.innerHTML = "<p>Loading branches...</p>";
-      try {
-        const res = await fetch(`${apiUrl}/latest`, {
-          headers: { "X-Master-Key": apiKey }
-        });
-        const data = await res.json();
-        currentBranches = data.record || [];
-
-        const validBranches = currentBranches.filter(branch =>
-          branch.text && branch.text.trim() !== "" && !basicSwears.test(branch.text)
-        );
-
-        container.innerHTML = "";
-        if (validBranches.length === 0) {
-          container.innerHTML = "<p>No branches yet... you could be the very first. 🌟</p>";
-          return;
-        }
-
-        validBranches.forEach(branch => {
-          const p = document.createElement("p");
-          p.textContent = "— " + branch.text;
-          container.appendChild(p);
-        });
-      } catch (err) {
-        console.error("Error loading branches:", err);
-        container.innerHTML = "<p>Failed to load branches.</p>";
-      }
+  // 📌 Form submission logic with cooldown
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = form.querySelector("input").value || form.querySelector("textarea").value;
+    if (text.trim() !== "") {
+      messages.push({ text, createdAt: Date.now() });
+      renderMessages();
     }
 
-    async function saveBranch(text) {
-      try {
-        const updatedBranches = [...currentBranches, { text }];
-        await fetch(apiUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": apiKey
-          },
-          body: JSON.stringify(updatedBranches)
-        });
-        currentBranches = updatedBranches;
-        loadBranches();
-      } catch (err) {
-        console.error("Error saving branch:", err);
-      }
-    }
+    // Cooldown sequence
+    form.style.display = "none";
+    cooldownContainer.style.display = "block";
+    cooldownBar.style.width = "0%";
 
-    form.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const sentence = textarea.value.trim();
-      if (!sentence) {
-        alert("Please enter a sentence.");
-        return;
-      }
-
-      if (
-        basicSwears.test(sentence) ||
-        stylizedSwears.test(sentence) ||
-        forbiddenEndings.test(sentence)
-      ) {
-        alert("Your sentence contains blocked words or an ending. Try again with something cleaner and infinite!");
-        return;
-      }
-
-      await saveBranch(sentence);
-      textarea.value = "";
-
-      form.style.display = "none";
-      cooldownContainer.style.display = "block";
+    setTimeout(() => { cooldownBar.style.width = "100%"; }, 50);
+    setTimeout(() => {
+      form.style.display = "flex";
+      cooldownContainer.style.display = "none";
       cooldownBar.style.width = "0%";
-
-      setTimeout(() => { cooldownBar.style.width = "100%"; }, 50);
-      setTimeout(() => {
-        form.style.display = "flex";
-        cooldownContainer.style.display = "none";
-        cooldownBar.style.width = "0%";
-      }, 10000);
-    });
-
-    loadBranches();
-
-    // 🧪 Glitch Easter Egg Logic
-    const inputFields = document.querySelectorAll("input, textarea");
-    const overlay = document.getElementById("glitch-overlay");
-    const escapeBtn = document.getElementById("escape-btn");
-
-    inputFields.forEach(input => {
-      input.addEventListener("input", (e) => {
-        if (e.target.value.toLowerCase().includes("unfinishable")) {
-          triggerGlitch();
-        }
-      });
-    });
-
-    escapeBtn.addEventListener("click", () => {
-      console.warn("ACCESS DENIED. The loop continues.");
-      showTrap();
-    });
-
-    function triggerGlitch() {
-      overlay.style.display = "flex";
-      console.warn("You triggered the anomaly. The loop begins.");
-    }
-
-    function showTrap() {
-      // ⚠️ Preserve dark mode styling
-      document.body.style.background = "#0d0d0d";
-      document.body.innerHTML = `
-        <div style="
-          color: red;
-          font-family: monospace;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          flex-direction: column;
-        ">
-          <p style="font-size: 1.4rem; margin-bottom: 20px;">There is no way out.</p>
-          <p style="font-size: 1.4rem;">You're part of it now.</p>
-        </div>
-      `;
-    }
+    }, 10000);
   });
+
+  // 📜 Render messages with pagination
+  function renderMessages() {
+    const slice = messages.slice(-visibleCount);
+    messageList.innerHTML = slice.map(m => `<li>${escapeHTML(m.text)}</li>`).join("");
+    loadMoreBtn.style.display = messages.length > visibleCount ? "block" : "none";
+  }
+
+  // 🔽 Load more button
+  loadMoreBtn.addEventListener("click", () => {
+    visibleCount += 20;
+    renderMessages();
+  });
+
+  // 🔒 Escape HTML utility
+  function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // 🧪 Glitch Easter Egg Logic
+  inputFields.forEach(input => {
+    input.addEventListener("input", (e) => {
+      if (e.target.value.toLowerCase().includes("unfinishable")) {
+        triggerGlitch();
+      }
+    });
+  });
+
+  escapeBtn.addEventListener("click", () => {
+    console.warn("ACCESS DENIED. The loop continues.");
+    showTrap();
+  });
+
+  function triggerGlitch() {
+    overlay.style.display = "flex";
+    console.warn("You triggered the anomaly. The loop begins.");
+  }
+
+  function showTrap() {
+    // ⚠️ Preserve dark mode styling
+    document.body.style.background = "#0d0d0d";
+    document.body.innerHTML = `
+      <div style="
+        color: red;
+        font-family: monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+      ">
+        <p style="font-size: 1.4rem; margin-bottom: 20px;">There is no way out.</p>
+        <p style="font-size: 1.4rem;">You're part of it now.</p>
+      </div>
+    `;
+  }
+});
 </script>
 </body>
 </html>
